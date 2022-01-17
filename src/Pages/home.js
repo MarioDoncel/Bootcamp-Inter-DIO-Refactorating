@@ -18,38 +18,40 @@ const useStyles = makeStyles((theme) => ({
 const HomePage = () => {
     const products = useSelector(state => state.products)
     const classes = useStyles();
+    
 
-    const categories = products.map(
-        ({id_categories,name_categories}) => {
-            const container = { };
-            container['id'] = id_categories;
-            container['name'] = name_categories;
-            return container;
-        }
-    )
+    console.log(products)
+    // const categories = products.map(
+    //     ({id_categories,name_categories}) => {
+    //         const container = { };
+    //         container['id'] = id_categories;
+    //         container['name'] = name_categories;
+    //         return container;
+    //     }
+    // )
+    const categoriesWithRepetition = products.map(({name_categories})=>  name_categories)
+    const categories = Array.from(new Set(categoriesWithRepetition))
+    
+    console.log(categories)
 
+    
     const category = categories.map(JSON.stringify)
                     .filter(function(item, index, arr){
                         return arr.indexOf(item, index + 1) === -1;
                     })
                     .map(JSON.parse)
-
-
-    const categoriesNames = categories.map(category => category.name)
     
-    let count = categoriesNames.reduce((acc, name) => {
+    console.log(category)
+
+
+    const countCategories = products.reduce((acc, {name_categories:name}) => {
         if(acc[name]) {
              acc[name]++
         } else  {
             acc[name] = 1}
         return acc
     },{})
-    // for(let i = 0; i < categoriesNames.length; i++){
-    //     {
-    //         let key = categoriesNames[i];
-    //         count[key] = (count[key] ? count[key] + 1 : 1)
-    //     }
-    // }
+    
 
     return(
         <Grid container spacing={3} className={classes.root}>
@@ -59,13 +61,13 @@ const HomePage = () => {
                         Categorias
                     </Typography>
                     <List>
-                        {category.map(
-                            category => {
+                        {categories.map(
+                            (category, index) => {
                                 return (
                                     <Item
-                                        key = {category.id} 
-                                        name= {category.name}
-                                        details={count[category.name]}
+                                        key = {index} 
+                                        name= {category}
+                                        details={countCategories[category]}
                                     />
                                 )
                             }
