@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cartActions from '../store/actions/cart';
 
 const Cart = () => {
-    const cart = useSelector(state => state.cart)
+    const {cart:{Cart, value}} = useSelector(state => state)
     const dispatch = useDispatch();
 
     let totalPrice = 0;
-
-    for(let i = 0; i < cart.Cart.length; i++) {
-        totalPrice += (cart.Cart[i].price * cart.Cart[i].quantity)
-    }
-
-    if(cart.value > 0){
-        localStorage.setItem('dioshopping: cart', JSON.stringify(cart))
-    }
+    totalPrice = Cart.reduce((acc, {price, quantity})=> acc+=price*quantity, totalPrice )
+   
+    useLayoutEffect(()=>{
+        localStorage.setItem('dioshopping: cart', JSON.stringify({Cart, value}))
+    },[value])
+    // if(value > 0){
+    //     localStorage.setItem('dioshopping: cart', JSON.stringify({Cart, value}))
+    // }
 
     return(
         <>
             <button type="button" className="btn btn-info" data-bs-toggle="modal" data-bs-target="#CartModal">
                 <span><i className="fas fa-shopping-cart"></i></span>
                 <span className="badge rounded-pill bg-info text-dark">
-                    {cart.value}
+                    {value}
                 </span>
             </button>
 
@@ -50,24 +50,24 @@ const Cart = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {cart.Cart.map( item =>{
+                            {Cart.map( item =>{
                                 return(
                                     <tr key={item.id}>
-                                        <th><button onClick={()=>dispatch(cartActions.DeleteItem(cart, item))} className="badge bg-danger"><i className="fas fa-window-close"></i></button></th>
+                                        <th><button onClick={()=>dispatch(cartActions.DeleteItem({Cart, value}, item))} className="badge bg-danger"><i className="fas fa-window-close"></i></button></th>
                                         <th><img className="img-fluid img-thumbnail" src={item.image} alt={item.Name} width="50px"/></th>
                                         <th><span className="badge badge-pill bg-warning">
                                             {item.quantity}
                                         </span></th>
                                         <th>R$ {item.price.toFixed(2)}</th>
-                                        <th><button onClick={()=>dispatch(cartActions.AddItem(cart, item))} className="badge badge-pill bg-primary"><i className="fas fa-plus"></i></button></th>
-                                        <th><button onClick={()=>dispatch(cartActions.RemoveItem(cart, item))} className="badge badge-pill bg-danger"><i className="fas fa-minus"></i></button></th>
+                                        <th><button onClick={()=>dispatch(cartActions.AddItem({Cart, value}, item))} className="badge badge-pill bg-primary"><i className="fas fa-plus"></i></button></th>
+                                        <th><button onClick={()=>dispatch(cartActions.RemoveItem({Cart, value}, item))} className="badge badge-pill bg-danger"><i className="fas fa-minus"></i></button></th>
                                         <th>R$ {(item.price * item.quantity).toFixed(2)}</th>
                                     </tr>
                                 )
                             })}
                             <tr>
                             <th colSpan="2" scope="col">Total</th>
-                            <th colSpan="3">{cart.value} itens</th>
+                            <th colSpan="3">{value} itens</th>
                             <th colSpan="2">R$ {totalPrice.toFixed(2)}</th>
                             </tr>
                         </tbody>
