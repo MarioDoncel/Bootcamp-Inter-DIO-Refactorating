@@ -1,21 +1,22 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cartActions from '../store/actions/cart';
 
 const Cart = () => {
     const {cart:{Cart, value}} = useSelector(state => state)
     const dispatch = useDispatch();
+    const [totalPrice, setTotalPrice ] = useState(0)
 
-    let totalPrice = 0;
-    totalPrice = Cart.reduce((acc, {price, quantity})=> acc+=price*quantity, totalPrice )
+    // let totalPrice = 0;
+    // totalPrice = Cart.reduce((acc, {price, quantity})=> acc+=price*quantity, totalPrice )
+    
    
     useLayoutEffect(()=>{
+        console.log('hi')
+        setTotalPrice(Cart.reduce((acc, {price, quantity})=> acc+=price*quantity, 0 ))
         localStorage.setItem('dioshopping: cart', JSON.stringify({Cart, value}))
-    },[value])
-    // if(value > 0){
-    //     localStorage.setItem('dioshopping: cart', JSON.stringify({Cart, value}))
-    // }
-
+    },[value, Cart])
+    
     return(
         <>
             <button type="button" className="btn btn-info" data-bs-toggle="modal" data-bs-target="#CartModal">
