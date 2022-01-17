@@ -19,31 +19,9 @@ const HomePage = () => {
     const products = useSelector(state => state.products)
     const classes = useStyles();
     
-
-    console.log(products)
-    // const categories = products.map(
-    //     ({id_categories,name_categories}) => {
-    //         const container = { };
-    //         container['id'] = id_categories;
-    //         container['name'] = name_categories;
-    //         return container;
-    //     }
-    // )
     const categoriesWithRepetition = products.map(({name_categories})=>  name_categories)
     const categories = Array.from(new Set(categoriesWithRepetition))
     
-    console.log(categories)
-
-    
-    const category = categories.map(JSON.stringify)
-                    .filter(function(item, index, arr){
-                        return arr.indexOf(item, index + 1) === -1;
-                    })
-                    .map(JSON.parse)
-    
-    console.log(category)
-
-
     const countCategories = products.reduce((acc, {name_categories:name}) => {
         if(acc[name]) {
              acc[name]++

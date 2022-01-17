@@ -37,10 +37,12 @@ const ChangeCart = (localCart) => {
     }
 }
 
-export default {
+const actions = {
     Add,
     AddItem,
     RemoveItem,
     DeleteItem,
     ChangeCart
 }
+
+export default actions
