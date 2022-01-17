@@ -11,10 +11,12 @@ const Contatos = () => {
     const [render, setRender] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    useEffect(async () => {
-        const response = await fetch(url)
-        const data = await response.json();
-        setMessage(data);
+    useEffect( () => {
+        (async()=>{
+            const response = await fetch(url)
+            const data = await response.json();
+            setMessage(data);
+        })()    
     }, [render])
 
     const sendMessage = () => {
