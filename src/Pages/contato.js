@@ -8,7 +8,6 @@ const Contatos = () => {
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
     const [validator, setValidator] = useState(false);
-    const [render, setRender] = useState(false);
     const [success, setSuccess] = useState(false);
 
     useEffect( () => {
@@ -16,7 +15,7 @@ const Contatos = () => {
             const data = await fetch(url).then((response) => response.json())
             setMessage(data);
         })()    
-    }, [render])
+    }, [success])
 
     const sendMessage = async () => {
         setValidator(false);
@@ -37,13 +36,13 @@ const Contatos = () => {
             .then((response) => response.json())
 
         if(id){
-            setRender(true);
             setSuccess(true);
             setTimeout(() => setSuccess(false), 5000)
+            setAuthor('');
+            setContent('');
         }
 
-        setAuthor('');
-        setContent('');
+       
     }
 
     return(
