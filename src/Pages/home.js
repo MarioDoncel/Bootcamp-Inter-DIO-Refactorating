@@ -19,22 +19,22 @@ const HomePage = () => {
     const products = useSelector(state => state.products)
     const classes = useStyles();
 
-    const categorys = products.map(
+    const categories = products.map(
         category => {
             const container = { };
-            container['id'] = category.id_categorys;
-            container['name'] = category.name_categorys;
+            container['id'] = category.id_categories;
+            container['name'] = category.name_categories;
             return container;
         }
     )
 
-    const category = categorys.map(JSON.stringify)
+    const category = categories.map(JSON.stringify)
                     .filter(function(item, index, arr){
                         return arr.indexOf(item, index + 1) === -1;
                     })
                     .map(JSON.parse)
 
-    const arrayCategory = categorys.map(category => category.name)
+    const arrayCategory = categories.map(category => category.name)
     let count = { };
 
     for(let i = 0; i < arrayCategory.length; i++){
