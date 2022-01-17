@@ -8,7 +8,6 @@ const Cart = () => {
     const [totalPrice, setTotalPrice ] = useState(0)
    
     useLayoutEffect(()=>{
-        console.log('hi')
         setTotalPrice(Cart.reduce((acc, {price, quantity})=> acc+=price*quantity, 0 ))
         localStorage.setItem('dioshopping: cart', JSON.stringify({Cart, value}))
     },[value, Cart])
