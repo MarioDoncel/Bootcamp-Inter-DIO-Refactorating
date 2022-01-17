@@ -20,10 +20,10 @@ const HomePage = () => {
     const classes = useStyles();
 
     const categories = products.map(
-        category => {
+        ({id_categories,name_categories}) => {
             const container = { };
-            container['id'] = category.id_categories;
-            container['name'] = category.name_categories;
+            container['id'] = id_categories;
+            container['name'] = name_categories;
             return container;
         }
     )
@@ -34,15 +34,22 @@ const HomePage = () => {
                     })
                     .map(JSON.parse)
 
-    const arrayCategory = categories.map(category => category.name)
-    let count = { };
 
-    for(let i = 0; i < arrayCategory.length; i++){
-        {
-            let key = arrayCategory[i];
-            count[key] = (count[key] ? count[key] + 1 : 1)
-        }
-    }
+    const categoriesNames = categories.map(category => category.name)
+    
+    let count = categoriesNames.reduce((acc, name) => {
+        if(acc[name]) {
+             acc[name]++
+        } else  {
+            acc[name] = 1}
+        return acc
+    },{})
+    // for(let i = 0; i < categoriesNames.length; i++){
+    //     {
+    //         let key = categoriesNames[i];
+    //         count[key] = (count[key] ? count[key] + 1 : 1)
+    //     }
+    // }
 
     return(
         <Grid container spacing={3} className={classes.root}>
